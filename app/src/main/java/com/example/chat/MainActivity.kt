@@ -33,9 +33,9 @@ class MainActivity : FragmentActivity() {
         init()
         setContent {
             ChatTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
-                }
+
+
             }
         }
 
@@ -43,20 +43,20 @@ class MainActivity : FragmentActivity() {
         fun Screen(modifier: Modifier = Modifier) {
             if (openConversations) {
 
-            }
-        } else {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(onClick = {/*TODO*/ }) {
-                    Text(text = "Open Conversations")
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Button(onClick = {/*TODO*/ }) {
+                        Text(text = "Open Conversations")
+                    }
                 }
+
             }
         }
-    }
 
-        private fun init() {
+        fun init() {
             val appID = 4L
             val appSign = "433"
             ZIMKit.initWith(application, appID, appSign, ZIMKitConfig())
