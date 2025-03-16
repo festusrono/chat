@@ -1,6 +1,8 @@
 package com.example.chat
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,12 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
 import com.elvishew.xlog.XLog.init
 import com.example.chat.ui.theme.ChatTheme
+import com.zegocloud.zimkit.components.conversation.ui.ZIMKitConversationFragment
 import com.zegocloud.zimkit.services.ZIMKit
 import com.zegocloud.zimkit.services.ZIMKit.connectUser
 import com.zegocloud.zimkit.services.ZIMKitConfig
+import com.zegocloud.zimkit.services.model.ZIMKitConversation
 import im.zego.zim.enums.ZIMErrorCode
 
 class MainActivity : FragmentActivity() {
@@ -72,18 +77,28 @@ class MainActivity : FragmentActivity() {
             this@MainActivity.supportFragmentManager
         }
         val fragment = remember {
-            ZIMKitConversationsFragment()
+            ZIMKitConversationFragment()
         }
-        AndroidView(
+        AndroidView (
             modifier = modifier,
             factory = {
                 FrameLayout(it).apply {
+                    id = View.generateViewId()
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
 
                 }
+            },
+            update = {
+                fragmentManager.beginTransaction()
+                    .replace(it.id, fragment)
+                    .commit()
             }
         )
     }
-    }
+
 
         private fun connectUser() {
             val userId = "user1"
@@ -110,5 +125,5 @@ class MainActivity : FragmentActivity() {
             ZIMKit.initNotifications()
         }
     }
-}
+
 
